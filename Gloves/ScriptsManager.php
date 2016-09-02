@@ -31,7 +31,7 @@ abstract class ScriptsManager {
 
     abstract static function load();
     
-    protected static function getAssetsUrl($path){
+    public static function getAssetsUrl($path){
         return plugins_url('../'.Config::get('assets-directory').'/'.$path, __FILE__);
     }
 }

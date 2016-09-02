@@ -39,6 +39,11 @@ abstract class Model {
         }
     }
 
+    /**
+     * Drops table in database
+     * 
+     * @global $wpdb
+     */
     public static function drop() {
         global $wpdb;
         $tableName = static::$tableName;
@@ -50,22 +55,42 @@ abstract class Model {
         \delete_option($tableName . '_version');
     }
 
-    public static function getBy($field, $value) {
+    public static function get($field = null, $value = '*') {
         global $wpdb;
 
         $tableName = static::$tableName;
 
-        $sql = "SELECT * FROM $tableName WHERE $field = '$value'";
+        $sql = "SELECT * FROM $tableName";
+        if($field !== null){
+            "WHERE $field = '$value'";
+        }
         $row = $wpdb->get_results($sql, OBJECT);
 
         return $row;
     }
 
+    /**
+     * 
+     * @global type $wpdb
+     * @param array $data
+     * @return integer
+     */
     public static function insert($data) {
         global $wpdb;
         $tableName = static::$tableName;
         $wpdb->insert($tableName, $data);
         return $wpdb->insert_id;
+    }
+    
+    /**
+     * 
+     * @global  $wpdb
+     * @param integer $id
+     * @return number of rows affected or false on error
+     */
+    public static function delete($id){
+        global $wpdb;
+        return $wpdb->delete(static::$tableName, array('ID' => $id));
     }
 
 }

@@ -34,13 +34,14 @@ class PluginMenu {
         static::$page['file'] = $domain;
         $name = Config::get('name');
         static::$page['id'] = add_menu_page($name, $name, 'administrator', $domain, array('\Gloves\PluginMenu', 'view'));
-        foreach (static::$subpages as &$page) {
-            $page['id'] = (\add_submenu_page($domain, $page['title'], $page['title'], 'administrator', $page['link']));
+        if (!empty(static::$subpages)) {
+            foreach (static::$subpages as &$page) {
+                $page['id'] = (\add_submenu_page($domain, $page['title'], $page['title'], 'administrator', $page['link']));
+            }
         }
     }
 
     /**
-     * 
      * 
      * @global type $submenu_file
      * @global type $current_screen
@@ -50,24 +51,24 @@ class PluginMenu {
     public static function filter() {
         global $submenu_file, $current_screen, $pagenow;
         $parent_file = null;
+        if (!empty(static::$subpages)) {
+            foreach (static::$subpages as $page) {
+                Logger::write($page['type']);
+                if ($current_screen->post_type === $page['post_type']) {
 
-        foreach (static::$subpages as $page) {
-            Logger::write($page['type']);
-            if ($current_screen->post_type === $page['post_type']) {
+                    if ($pagenow == 'post.php' && $page['type'] == "PostType") {
+                        $submenu_file = $page['link'];
+                    }
 
-                if ($pagenow == 'post.php' && $page['type'] == "PostType") {
-                    $submenu_file = $page['link'];
+                    if ($pagenow == 'edit-tags.php' && $page['type'] == "Taxonomy") {
+
+                        $submenu_file = $page['link'];
+                    }
+
+                    $parent_file = static::$page['file'];
                 }
-
-                if ($pagenow == 'edit-tags.php' && $page['type'] == "Taxonomy") {
-
-                    $submenu_file = $page['link'];
-                }
-
-                $parent_file = static::$page['file'];
             }
         }
-
 
         return $parent_file;
     }

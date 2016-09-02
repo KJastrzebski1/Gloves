@@ -30,8 +30,8 @@ abstract class Taxonomy {
         return static::$instance;
     }
     
-    public static function setup($slug = '', $single = '', $plural = '', $postType = null, $labels = array(), $args = array()){
-        static::$instance = new static($slug, $single, $plural, $postType, $labels, $args);
+    public static function setup($slug = '', $single = '', $plural = '', $postType = null, $args = array(), $labels = array()){
+        static::$instance = new static($slug, $single, $plural, $postType, $args, $labels);
     }
     public function getSlug(){
         return $this->slug;
@@ -54,7 +54,7 @@ abstract class Taxonomy {
      * @param type $labels
      * @param type $args
      */
-    protected function __construct($taxonomy, $single, $plural, $object_type = null, $labels = array(), $args = array()) {
+    protected function __construct($taxonomy, $single, $plural, $object_type = null, $args = array(), $labels = array()) {
         $this->slug = $taxonomy;
         $this->object = $object_type;
         $this->single = strtolower($single);
@@ -69,7 +69,7 @@ abstract class Taxonomy {
         $plural = $this->plural;
         $single = $this->single;
         $textDomain = Config::get('text-domain');
-        $labels = array(
+        $dlabels = array(
             'name' => _x(ucfirst($plural), 'taxonomy general name', $textDomain),
             'singular_name' => _x(ucfirst($single), 'taxonomy singular name', $textDomain),
             'search_items' => __('Search ' . ucfirst($plural), $textDomain),
@@ -87,9 +87,12 @@ abstract class Taxonomy {
             'not_found' => __('No ' . $plural . ' found.', $textDomain),
             'menu_name' => __(ucfirst($plural), $textDomain),
         );
-        $args = array(
+        foreach ($this->labels as $key => $value){
+            $dlabels[$key] = $value;
+        }
+        $dargs = array(
             'hierarchical' => false,
-            'labels' => $labels,
+            'labels' => $dlabels,
             'show_ui' => true,
             'show_in_menu' => true,
             //'show_admin_column' => true,
@@ -97,8 +100,11 @@ abstract class Taxonomy {
             'query_var' => true,
             'rewrite' => array('slug' => $this->slug),
         );
-        $error = register_taxonomy(
-                $this->slug, $this->object, $args
+        foreach ($this->labels as $key => $value){
+            $dargs[$key] = $value;
+        }
+        register_taxonomy(
+                $this->slug, $this->object, $dargs
         );
         
     }
