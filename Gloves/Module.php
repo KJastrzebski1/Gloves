@@ -3,25 +3,25 @@
 namespace Gloves;
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
-abstract class Module{
+trait Module{
     
     /*
      * acts always
      */
-    public function init();
+    abstract static function init();
     
     /*
      * on plugins activation
      */
-    public function activate();
+    abstract static function activate();
     
     /*
      * on plugin's deactivation
      */
-    public function deactivate();
+    abstract static function deactivate();
     
     /*
      *  on plugin's uninstall
      */
-    public function uninstall();
+    abstract static function uninstall();
 }

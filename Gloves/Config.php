@@ -14,7 +14,7 @@ class Config {
     
     public static function get($option){
         if(!isset(self::$config)){
-            self::$config = parse_ini_file('/../config.ini');
+            self::$config = include (__DIR__.'/../conf.php');
         }
         return self::$config[$option];
     }
