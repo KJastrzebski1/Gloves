@@ -50,6 +50,15 @@ class GlovesCLI {
      * Creates main plugin file based on data from conf.php
      */
     protected function setup() {
+        if(!file_exists($this->config['views-directory'])){
+            mkdir($this->config['views-directory']);
+        }
+        if(!file_exists($this->config['assets-directory'])){
+            mkdir($this->config['assets-directory']);
+        }
+        if(!file_exists($this->config['lang-directory'])){
+            mkdir($this->config['lang-directory']);
+        }
         $name = $this->config['name'];
         $title = "Plugin Name: ".$name;
         
@@ -113,8 +122,8 @@ $class::init();";
      * @param string $name
      * @param string $template
      */
-    protected function make_module($name, $template = 'standard'){
-        
+    protected function make_module($name, $template){
+        $template = $template !== null ? $template : 'standard';
         echo "Creating Module based on $template.\n";
         
         $template = "Gloves\\Template\\".ucfirst(strtolower($template)).'.php';
@@ -132,10 +141,17 @@ $class::init();";
             }
             exit();
         }
-        $dest = "Module\\$name.php";
-        if(!copy($template, $dest)){
-            echo "Couldn't copy template.";
+        if(!file_exists("Module")){
+            mkdir("Module");
         }
+        $dest = "Module\\".ucfirst($name).".php";
+        
+        $content = file_get_contents($template);
+        $file = fopen($dest, "w+");
+        $text = str_replace("class Module", "class ".ucfirst($name), $content);
+        fwrite($file, $text);
+        fclose($file);
+        
     }
 
     /**
@@ -144,7 +160,10 @@ $class::init();";
      * @param string $name
      */
     protected function make_model($name) {
-        $class = "Model\\" . $name;
+        if(!file_exists("Model")){
+            mkdir("Model");
+        }
+        $class = "Model\\" . ucfirst($name);
         echo "Creating Model file $class...\n";
         $file = fopen($class . '.php', 'w');
         if(!$file){

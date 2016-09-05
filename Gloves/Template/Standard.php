@@ -1,9 +1,7 @@
 <?php
-namespace Module\Template;
+namespace Module;
 
 defined('ABSPATH') or die('No script kiddies please!');
-
-use \Gloves\Config;
 
 /**
  * Template file to create module by CLI

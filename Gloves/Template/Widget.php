@@ -1,5 +1,5 @@
 <?php
-namespace Module\Template;
+namespace Module;
 
 defined('ABSPATH') or die('No script kiddies please!');
 
@@ -7,7 +7,7 @@ use \Gloves\Config;
 /**
  * Template file to create module by CLI
  */
-class Widget extends \WP_Widget {
+class Module extends \WP_Widget {
 
     function __construct() {
         $domain = Config::get('text-domain');

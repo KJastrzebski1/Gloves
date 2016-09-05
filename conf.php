@@ -1,9 +1,9 @@
 <?php
 
 return array(
-    "name" => "Ticket Plugin",
-    "text-domain" => "ticket-plugin",
-    "views-directory" => "Views",
-    "assets-directory" => "Assets",
+    "name" => "",
+    "text-domain" => "",
+    "views-directory" => "views",
+    "assets-directory" => "assets",
     "lang-directory" => "lang",
 );
