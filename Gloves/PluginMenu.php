@@ -4,6 +4,9 @@ namespace Gloves;
 
 defined('ABSPATH') or die('No script kiddies please!');
 
+/**
+ * Manages plugin's admin page
+ */
 class PluginMenu {
 
     protected static $viewDir;

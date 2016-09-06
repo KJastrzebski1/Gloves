@@ -3,7 +3,9 @@
 namespace Gloves;
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
-
+/**
+ * Simple logger which saves communicates in the given file
+ */
 class Logger {
 
     protected static $dir;

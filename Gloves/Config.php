@@ -4,6 +4,9 @@ namespace Gloves;
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
+/**
+ * Configuration handler for easier usage
+ */
 class Config {
     
     protected static $config;

@@ -4,9 +4,9 @@ namespace Gloves;
 
 defined('ABSPATH') or die('No script kiddies please!');
 
-abstract class PostType {
+abstract class AbstractPostType {
 
-    use Module;
+    use ModuleTrait;
 
     protected $slug;
     protected $single;

@@ -6,7 +6,7 @@ include_once 'Config.php';
 
 defined('ABSPATH') or die('No script kiddies please!');
 
-abstract class Plugin {
+abstract class AbstractPlugin {
     /*
      * list of modules
      * 
@@ -48,7 +48,7 @@ abstract class Plugin {
         register_activation_hook($dir, array($class, "activate"));
         register_deactivation_hook($dir, array($class, "deactivate"));
         register_uninstall_hook($dir, array($class, "uninstall"));
-
+        array_push(static::$settings, 'installed');
         PluginSettings::add(static::$settings);
         PluginSettings::init();
         Render::init(dirname($dir));

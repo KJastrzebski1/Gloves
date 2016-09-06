@@ -4,6 +4,10 @@ namespace Gloves;
 
 defined('ABSPATH') or die('No script kiddies please!');
 
+
+/**
+ * Manages views
+ */
 class Render {
 
     protected static $dir;

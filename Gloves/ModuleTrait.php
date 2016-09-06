@@ -3,7 +3,7 @@
 namespace Gloves;
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
-trait Module{
+trait ModuleTrait{
     
     /*
      * acts always

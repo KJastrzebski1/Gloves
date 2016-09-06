@@ -85,9 +85,9 @@ class GlovesCLI {
  */
 include 'autoloader.php';
 
-use Gloves\Plugin;
+use Gloves\AbstractPlugin;
 
-class $class extends Plugin {
+class $class extends AbstractPlugin {
 
     protected static \$modules = [];
     protected static \$models = [];
@@ -149,6 +149,7 @@ $class::init();";
         $content = file_get_contents($template);
         $file = fopen($dest, "w+");
         $text = str_replace("class Module", "class ".ucfirst($name), $content);
+        $text = str_replace("namespace Gloves\Template", "namespace Module", $text);
         fwrite($file, $text);
         fclose($file);
         

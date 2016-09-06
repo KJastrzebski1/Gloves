@@ -4,6 +4,9 @@ namespace Gloves;
 
 defined('ABSPATH') or die('No script kiddies please!');
 
+/**
+ * Adds meta box to given post type
+ */
 abstract class AbstractMetaBox {
     protected $postType;
 

@@ -1,11 +1,11 @@
 <?php
-namespace Module;
+namespace Gloves\Template;
 
 defined('ABSPATH') or die('No script kiddies please!');
 
 use \Gloves\Config;
 /**
- * Template file to create module by CLI
+ * Template file to create Widget module
  */
 class Module extends \WP_Widget {
 

@@ -1,10 +1,10 @@
 <?php
-namespace Module;
+namespace Gloves\Template;
 
 defined('ABSPATH') or die('No script kiddies please!');
 
 /**
- * Template file to create module by CLI
+ * Template file to create basic module by CLI
  */
 
 class Module {

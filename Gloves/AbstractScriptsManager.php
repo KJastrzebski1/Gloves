@@ -4,7 +4,10 @@ namespace Gloves;
 
 defined('ABSPATH') or die('No script kiddies please!');
 
-abstract class ScriptsManager {
+/**
+ * Abstract class for managing scripts and styles
+ */
+abstract class AbstractScriptsManager {
 
     protected static $instance;
     protected static $scripts;
@@ -27,10 +30,22 @@ abstract class ScriptsManager {
         add_action('wp_enqueue_scripts', array($class, 'load'));
     }
 
+    /**
+     * Called on admin_menu hook
+     */
     abstract static function loadAdmin();
 
+    /**
+     * Called on wp_enqueue_scripts
+     */
     abstract static function load();
     
+    /**
+     * Returns asset's uri. 
+     * 
+     * @param string $path
+     * @return plugins_url
+     */
     public static function getAssetsUrl($path){
         return plugins_url('../'.Config::get('assets-directory').'/'.$path, __FILE__);
     }

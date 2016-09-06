@@ -4,9 +4,13 @@ namespace Gloves;
 
 defined('ABSPATH') or die('No script kiddies please!');
 
-abstract class Taxonomy {
 
-    use Module;
+/**
+ * Taxanomy 
+ */
+abstract class AbstractTaxonomy {
+
+    use ModuleTrait;
     
     protected static $instance;
     protected $slug;
