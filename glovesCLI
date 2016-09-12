@@ -79,7 +79,7 @@ class GlovesCLI {
  * Text Domain: $domain
  * Domain Path: 
  * Version: 0.0.1
- * License: GPL3
+ * License: MIT
  * 
  */
 include 'autoloader.php';
