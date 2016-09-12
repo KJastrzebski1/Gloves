@@ -1,3 +1,4 @@
+#!/usr/bin/env php
 <?php
 include dirname(__FILE__, 4) . '/wp-config.php';
 include 'autoloader.php';
@@ -5,8 +6,6 @@ if (PHP_SAPI !== 'cli') {
     echo 'Nope.';
     exit();
 }
-
-echo "Welcome in Gloves CLI.\n";
 
 class GlovesCLI {
 
@@ -152,7 +151,7 @@ $class::init();";
         $text = str_replace("namespace Gloves\Template", "namespace Module", $text);
         fwrite($file, $text);
         fclose($file);
-        
+        echo "Add your module to modules table in your main plugin file.";
     }
 
     /**
