@@ -9,9 +9,18 @@
     "require": {
         "php": ">=5.5.0"
     },
+    "authors":[
+        {
+            "name": "Krzysztof Jastrzebski",
+            "email": "kalvot@gmail.com",
+            "role": "Developer"
+        }
+    ],
     "autoload": {
         "psr-4": {
-            "Gloves\\": "gloves/"
+            "Gloves\\": "gloves/",
+            "Module\\": "module/",
+            "Model\\" : "model/"
         }
     }
 }

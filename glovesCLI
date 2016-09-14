@@ -140,8 +140,8 @@ $class::init();";
             }
             exit();
         }
-        if(!file_exists("Module")){
-            mkdir("Module");
+        if(!file_exists("module")){
+            mkdir("module");
         }
         $dest = "Module\\".ucfirst($name).".php";
         
@@ -160,8 +160,8 @@ $class::init();";
      * @param string $name
      */
     protected function make_model($name) {
-        if(!file_exists("Model")){
-            mkdir("Model");
+        if(!file_exists("model")){
+            mkdir("model");
         }
         $class = "Model\\" . ucfirst($name);
         echo "Creating Model file $class...\n";

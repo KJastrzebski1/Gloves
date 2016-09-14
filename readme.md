@@ -8,7 +8,7 @@ Just download `.zip` file and unzip it in the plugins directory of Wordpress ins
 
 If you use composer you can instead use command:
 
-`composer create-project gloves/gloves`
+`composer create-project gloves/gloves your-project-name 1.0.0`
 
 
 ###Configuration###
@@ -17,7 +17,7 @@ Open `conf.php` and complete the array with plugin name and text-domain. In this
 
 ### Setup ###
 
-Open `cmd` in your plugin's directory. 
+Open command-line in your plugin's directory. 
 
 To create your main plugin file and structure use:
 `php glovesCLI.php setup`
