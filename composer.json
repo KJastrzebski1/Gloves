@@ -5,6 +5,7 @@
     "description": "Wordpress plugin framework",
     "keywords" : ["wordpress", "gloves"],
     "homepage" : "https://github.com/KJastrzebski1/Gloves",
+	"minimum-stability": "stable",
     "require": {
         "php": ">=5.5.0"
     },
