@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 include dirname(__FILE__, 4) . '/wp-config.php';
-include 'autoloader.php';
+include 'vendor/autoload.php';
 if (PHP_SAPI !== 'cli') {
     echo 'Nope.';
     exit();
@@ -82,7 +82,7 @@ class GlovesCLI {
  * License: MIT
  * 
  */
-include 'autoloader.php';
+include 'vendor/autoload.php';
 
 use Gloves\AbstractPlugin;
 

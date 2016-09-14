@@ -2,9 +2,14 @@
 
 **Gloves** is a simple framework created to make Wordpress plugin development faster and less annoying.
 
-##Start ##
+##Installation ##
 
-Just download `.zip` file and unzip it the plugins directory of Wordpress installation.
+Just download `.zip` file and unzip it in the plugins directory of Wordpress installation.
+
+If you use composer you can instead use command:
+
+`composer create-project gloves/gloves`
+
 
 ###Configuration###
 
