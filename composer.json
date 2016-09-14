@@ -1,7 +1,7 @@
 {
     "name": "gloves/gloves",
     "type": "project",
-    "licence" : "MIT",
+    "license" : "MIT",
     "description": "Wordpress plugin framework",
     "keywords" : ["wordpress", "gloves"],
     "homepage" : "https://github.com/KJastrzebski1/Gloves",
