@@ -12,7 +12,7 @@ class Logger {
 
     public static function init($dir) {
         static::$dir = $dir;
-        if (WP_DEBUG === TRUE) {
+        if (WP_DEBUG === TRUE && isset(static::$dir)) {
             $file = fopen(static::$dir, "a");
             fwrite($file, "Init\n");
             fclose($file);
@@ -20,7 +20,7 @@ class Logger {
     }
 
     public static function write($log) {
-        if (WP_DEBUG === TRUE) {
+        if (WP_DEBUG === TRUE && isset(static::$dir)) {
             $file = fopen(static::$dir, "a");
             if (is_array($log) || is_object($log)) {
                 fwrite($file, json_encode($log) . "\n");
