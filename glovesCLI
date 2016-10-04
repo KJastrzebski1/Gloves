@@ -175,7 +175,7 @@ namespace Model;
 
 use Gloves\Model\Model;
 
-class $arg extends Model{
+class ".ucfirst($name)." extends Model{
     protected static \$fields = [
     
     ];
