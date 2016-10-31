@@ -8,7 +8,7 @@ Just download `.zip` file and unzip it in the plugins directory of Wordpress ins
 
 If you use composer you can instead use command:
 
-`composer create-project gloves/gloves your-project-name 1.0.0`
+`composer create-project gloves/gloves your-project-name`
 
 
 ###Configuration###

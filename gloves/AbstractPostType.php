@@ -106,7 +106,7 @@ abstract class AbstractPostType {
         );
     }
 
-    public static function insert($title, $content = '') {
+    public static function insert($title, $content = '', $args = array()) {
         if (post_exists($title)) {
             $post = get_page_by_title($title, OBJECT, static::$instance->slug);
             return $post->ID;
@@ -117,9 +117,28 @@ abstract class AbstractPostType {
             'post_status' => 'publish',
             'post_type' => static::$instance->slug,
         );
+        
+        foreach($args as $key => $value){
+            $post[$key] = $value;
+        }
 
         $id = wp_insert_post($post);
         return $id;
+    }
+    
+    public static function update($title, $content=false, $args = array()){
+        if(!post_exists($title)){
+            $id = static::insert($title, $content, 'draft');
+        }
+        $post = get_page_by_title($title, ARRAY_A, static::$instance->slug);
+        if($content){
+            $post['post_content'] = $content;
+        }
+        foreach($args as $key => $value){
+            $post[$key] = $value;
+        }
+        wp_update_post($post);
+        return $post['ID'];
     }
 
     /**

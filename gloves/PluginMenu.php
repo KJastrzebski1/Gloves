@@ -13,6 +13,7 @@ class PluginMenu {
     protected static $instance;
     protected static $page;
     protected static $subpages;
+    protected static $context;
 
     private function __construct() {
         
@@ -25,9 +26,10 @@ class PluginMenu {
         return static::$instance;
     }
 
-    public static function init($view) {
+    public static function init($view, $context = array()) {
         static::$viewDir = $view;
-
+        static::$context = $context;
+        
         add_action('admin_menu', array('\Gloves\PluginMenu', 'create'));
         add_filter('parent_file', array('\Gloves\PluginMenu', 'filter'));
     }
@@ -77,7 +79,7 @@ class PluginMenu {
     }
 
     public static function view() {
-        Render::view(static::$viewDir);
+        Render::view(static::$viewDir, static::$context);
     }
 
     /**

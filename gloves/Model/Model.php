@@ -20,7 +20,8 @@ abstract class Model {
 
         $class = \explode('\\', get_called_class());
         $tableName = $wpdb->prefix . \strtolower(\end($class));
-        static::$tableName = $tableName;
+        $tableName = static::$tableName;
+        //var_dump($tableName);
         if (get_option($tableName . '_version') != static::$version) {
             static::drop();
             $charset_collate = $wpdb->get_charset_collate();
@@ -62,7 +63,7 @@ abstract class Model {
 
         $sql = "SELECT * FROM $tableName";
         if($field !== null){
-            "WHERE $field = '$value'";
+            $sql .= " WHERE $field = '$value'";
         }
         $row = $wpdb->get_results($sql, OBJECT);
 
@@ -70,6 +71,8 @@ abstract class Model {
     }
 
     /**
+     * 
+     * All fields, but ID has to be provided.
      * 
      * @global type $wpdb
      * @param array $data
@@ -82,6 +85,13 @@ abstract class Model {
         return $wpdb->insert_id;
     }
     
+    public static function update($data, $where){
+        global $wpdb;
+        $tableName = static::$tableName;
+        return $wpdb->update($tableName, $data, $where);
+    }
+
+
     /**
      * 
      * @global  $wpdb
