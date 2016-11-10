@@ -4,7 +4,8 @@ namespace Gloves;
 
 defined('ABSPATH') or die('No script kiddies please!');
 
-abstract class AbstractPostType {
+abstract class AbstractPostType
+{
 
     use ModuleTrait;
 
@@ -16,23 +17,26 @@ abstract class AbstractPostType {
     protected $metaBoxe;
     protected static $instance;
 
-    public static function getInstance() {
+    public static function getInstance()
+    {
         return static::$instance;
     }
 
-    public static function setup($postType = '', $single = '', $plural = '', $args = array(), $labels = array()) {
+    public static function setup($postType = '', $single = '', $plural = '', $args = array(), $labels = array())
+    {
         static::$instance = new static($postType, $single, $plural, $labels, $args);
     }
 
     /**
-     * 
+     *
      * @param string $single
      * @param string $plural
      * @param array $labels TODO
      * @param array $args TODO
-     * 
+     *
      */
-    protected function __construct($postType, $single, $plural, $args = array(), $labels = array()) {
+    protected function __construct($postType, $single, $plural, $args = array(), $labels = array())
+    {
         $this->slug = $postType;
         $this->single = strtolower($single);
         $this->plural = strtolower($plural);
@@ -41,14 +45,16 @@ abstract class AbstractPostType {
         add_action('init', array($this, 'register'));
     }
 
-    public static function addMetaBox($metaBox) {
+    public static function addMetaBox($metaBox)
+    {
         if (!class_exists($metaBox)) {
             $metaBox = '\\Module\\' . $metaBox;
         }
         static::$instance->metaBox = new $metaBox(static::$instance);
     }
 
-    public function register() {
+    public function register()
+    {
         $plural = $this->plural;
         $single = $this->single;
         $postType = $this->slug;
@@ -95,18 +101,21 @@ abstract class AbstractPostType {
         register_post_type($postType, $dargs);
     }
 
-    public function getSlug() {
+    public function getSlug()
+    {
         return $this->slug;
     }
 
-    public function getName() {
+    public function getName()
+    {
         return array(
             'singular' => $this->single,
             'plural' => $this->plural
         );
     }
 
-    public static function insert($title, $content = '', $args = array()) {
+    public static function insert($title, $content = '', $args = array())
+    {
         if (post_exists($title)) {
             $post = get_page_by_title($title, OBJECT, static::$instance->slug);
             return $post->ID;
@@ -118,7 +127,7 @@ abstract class AbstractPostType {
             'post_type' => static::$instance->slug,
         );
         
-        foreach($args as $key => $value){
+        foreach ($args as $key => $value) {
             $post[$key] = $value;
         }
 
@@ -126,15 +135,16 @@ abstract class AbstractPostType {
         return $id;
     }
     
-    public static function update($title, $content=false, $args = array()){
-        if(!post_exists($title)){
+    public static function update($title, $content = false, $args = array())
+    {
+        if (!post_exists($title)) {
             $id = static::insert($title, $content, 'draft');
         }
         $post = get_page_by_title($title, ARRAY_A, static::$instance->slug);
-        if($content){
+        if ($content) {
             $post['post_content'] = $content;
         }
-        foreach($args as $key => $value){
+        foreach ($args as $key => $value) {
             $post[$key] = $value;
         }
         wp_update_post($post);
@@ -143,13 +153,14 @@ abstract class AbstractPostType {
 
     /**
      * WP_Query based method. See codex for field names.
-     * 
+     *
      * @param type $field
      * @param type $value
      * @param type $orderby
      * @return type
      */
-    public static function getBy($field, $value, $orderby = 'date') {
+    public static function getBy($field, $value, $orderby = 'date')
+    {
         $args = array(
             'posts_per_page' => -1,
             'offset' => 0,
@@ -162,5 +173,4 @@ abstract class AbstractPostType {
         $response = new \WP_Query($args);
         return $response->posts;
     }
-
 }

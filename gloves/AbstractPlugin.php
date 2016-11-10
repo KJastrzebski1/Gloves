@@ -6,7 +6,8 @@ include_once 'Config.php';
 
 defined('ABSPATH') or die('No script kiddies please!');
 
-abstract class AbstractPlugin {
+abstract class AbstractPlugin
+{
     /*
      * list of modules
      * 
@@ -17,27 +18,28 @@ abstract class AbstractPlugin {
 
     /**
      * list of database models
-     * 
+     *
      * @var array
      */
     protected static $models;
 
     /**
      * list of settings
-     * 
+     *
      * @var array
      */
     protected static $settings;
 
-    private function __construct() {
-        
+    private function __construct()
+    {
     }
 
     /*
      * Modules initialization
      */
 
-    public static function init() {
+    public static function init()
+    {
 
 
         $main = new \ReflectionClass(get_called_class());
@@ -69,7 +71,8 @@ abstract class AbstractPlugin {
         add_action('plugins_loaded', array($class, 'lang'));
     }
 
-    public static function lang() {
+    public static function lang()
+    {
         $main = new \ReflectionClass(get_called_class());
 
         $dir = $main->getFileName();
@@ -78,17 +81,19 @@ abstract class AbstractPlugin {
         load_plugin_textdomain($domain, false, $dir . '/' . $lang);
     }
 
-    public static function activate_once() {
-        Logger::write('activate_once');
+    public static function activateOnce()
+    {
+        Logger::write('activateOnce');
         foreach (static::$modules as $module => $args) {
             $module = '\Module\\' . $module;
-            if (method_exists($module, 'activate_once')) {
-                $module::activate_once($args);
+            if (method_exists($module, 'activateOnce')) {
+                $module::activateOnce($args);
             }
         }
     }
 
-    public static function activate() {
+    public static function activate()
+    {
         Logger::write('activate');
         foreach (static::$modules as $module => $args) {
             $module = '\Module\\' . $module;
@@ -97,12 +102,13 @@ abstract class AbstractPlugin {
             }
         }
         if (!PluginSettings::get('installed')) {
-            static::activate_once();
+            static::activateOnce();
             PluginSettings::set('installed', 1);
         }
     }
 
-    public static function deactivate() {
+    public static function deactivate()
+    {
         Logger::write('deactivate');
         foreach (static::$modules as $module => $args) {
             $module = '\Module\\' . $module;
@@ -120,7 +126,8 @@ abstract class AbstractPlugin {
         }
     }
 
-    public static function uninstall() {
+    public static function uninstall()
+    {
         Logger::write('uninstall');
         foreach (static::$modules as $module => $args) {
             $module = '\Module\\' . $module;
@@ -129,5 +136,4 @@ abstract class AbstractPlugin {
             }
         }
     }
-
 }

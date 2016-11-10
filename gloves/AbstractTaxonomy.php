@@ -6,9 +6,10 @@ defined('ABSPATH') or die('No script kiddies please!');
 
 
 /**
- * Taxanomy 
+ * Taxanomy
  */
-abstract class AbstractTaxonomy {
+abstract class AbstractTaxonomy
+{
 
     use ModuleTrait;
     
@@ -21,7 +22,7 @@ abstract class AbstractTaxonomy {
     protected $args;
 
     /**
-     * 
+     *
      * @param string $slug
      * @param string $single
      * @param string $plural
@@ -30,27 +31,32 @@ abstract class AbstractTaxonomy {
      * @param array $args
      * @return Taxonomy
      */
-    public static function getInstance(){
+    public static function getInstance()
+    {
         return static::$instance;
     }
     
-    public static function setup($slug = '', $single = '', $plural = '', $postType = null, $args = array(), $labels = array()){
+    public static function setup($slug = '', $single = '', $plural = '', $postType = null, $args = array(), $labels = array())
+    {
         static::$instance = new static($slug, $single, $plural, $postType, $args, $labels);
     }
-    public function getSlug(){
+    public function getSlug()
+    {
         return $this->slug;
     }
-    public function getPostType(){
+    public function getPostType()
+    {
         return $this->object;
     }
-    public function getName(){
+    public function getName()
+    {
         return array(
             'singular' => $this->single,
             'plural' => $this->plural
         );
     }
     /**
-     * 
+     *
      * @param type $taxonomy
      * @param type $single
      * @param type $plural
@@ -58,7 +64,8 @@ abstract class AbstractTaxonomy {
      * @param type $labels
      * @param type $args
      */
-    protected function __construct($taxonomy, $single, $plural, $object_type = null, $args = array(), $labels = array()) {
+    protected function __construct($taxonomy, $single, $plural, $object_type = null, $args = array(), $labels = array())
+    {
         $this->slug = $taxonomy;
         $this->object = $object_type;
         $this->single = strtolower($single);
@@ -69,7 +76,8 @@ abstract class AbstractTaxonomy {
         add_action('init', array($this, 'register'), 0);
     }
 
-    public function register() {
+    public function register()
+    {
         $plural = $this->plural;
         $single = $this->single;
         $textDomain = Config::get('text-domain');
@@ -91,7 +99,7 @@ abstract class AbstractTaxonomy {
             'not_found' => __('No ' . $plural . ' found.', $textDomain),
             'menu_name' => __(ucfirst($plural), $textDomain),
         );
-        foreach ($this->labels as $key => $value){
+        foreach ($this->labels as $key => $value) {
             $dlabels[$key] = $value;
         }
         $dargs = array(
@@ -104,31 +112,32 @@ abstract class AbstractTaxonomy {
             'query_var' => true,
             'rewrite' => array('slug' => $this->slug),
         );
-        foreach ($this->labels as $key => $value){
+        foreach ($this->labels as $key => $value) {
             $dargs[$key] = $value;
         }
         register_taxonomy(
-                $this->slug, $this->object, $dargs
+            $this->slug,
+            $this->object,
+            $dargs
         );
-        
     }
 
     /**
-     * Inserts term. 
-     * 
+     * Inserts term.
+     *
      * @param string name
      * @return int term_id
      */
-    public static function insert($name) {
+    public static function insert($name)
+    {
         
         $term = wp_insert_term($name, static::$instance->slug);
         
         if (is_wp_error($term)) {
-            if(isset($term->error_data['term_exists'])){
+            if (isset($term->error_data['term_exists'])) {
                 return $term->error_data['term_exists'];
             }
             return $term;
-            
         }
         Logger::write('Inserting term: '. serialize($term));
         return $term['term_id'];
@@ -136,17 +145,17 @@ abstract class AbstractTaxonomy {
 
     /**
      * Get term by $field
-     * 
+     *
      * @param string $field
      * @param type $arg
      * @return WP_term
      */
-    public static function getBy($field, $arg) {
+    public static function getBy($field, $arg)
+    {
         return get_term_by($field, $arg, static::$instance->slug);
     }
     
-    public static function remove(){
-        
+    public static function remove()
+    {
     }
-
 }

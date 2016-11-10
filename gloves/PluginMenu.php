@@ -7,7 +7,8 @@ defined('ABSPATH') or die('No script kiddies please!');
 /**
  * Manages plugin's admin page
  */
-class PluginMenu {
+class PluginMenu
+{
 
     protected static $viewDir;
     protected static $instance;
@@ -15,18 +16,20 @@ class PluginMenu {
     protected static $subpages;
     protected static $context;
 
-    private function __construct() {
-        
+    private function __construct()
+    {
     }
 
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (!isset(static::$instance)) {
             static::$instance = new static();
         }
         return static::$instance;
     }
 
-    public static function init($view, $context = array()) {
+    public static function init($view, $context = array())
+    {
         static::$viewDir = $view;
         static::$context = $context;
         
@@ -34,39 +37,40 @@ class PluginMenu {
         add_filter('parent_file', array('\Gloves\PluginMenu', 'filter'));
     }
 
-    public static function create() {
+    public static function create()
+    {
         $domain = Config::get('text-domain');
         static::$page['file'] = $domain;
         $name = Config::get('name');
-        static::$page['id'] = add_menu_page($name, $name, 'administrator', $domain, array('\Gloves\PluginMenu', 'view'));
+        $function = array('\Gloves\PluginMenu', 'view');
+        static::$page['id'] = add_menu_page($name, $name, 'administrator', $domain, $function);
         if (!empty(static::$subpages)) {
             foreach (static::$subpages as &$page) {
-                $page['id'] = (\add_submenu_page($domain, $page['title'], $page['title'], 'administrator', $page['link']));
+                $page['id'] = \add_submenu_page($domain, $page['title'], $page['title'], 'administrator', $page['link']);
             }
         }
     }
 
     /**
-     * 
+     *
      * @global type $submenu_file
      * @global type $current_screen
      * @global type $pagenow
      * @return type
      */
-    public static function filter() {
+    public static function filter()
+    {
         global $submenu_file, $current_screen, $pagenow;
         $parent_file = null;
         if (!empty(static::$subpages)) {
             foreach (static::$subpages as $page) {
                 Logger::write($page['type']);
                 if ($current_screen->post_type === $page['post_type']) {
-
                     if ($pagenow == 'post.php' && $page['type'] == "PostType") {
                         $submenu_file = $page['link'];
                     }
 
                     if ($pagenow == 'edit-tags.php' && $page['type'] == "Taxonomy") {
-
                         $submenu_file = $page['link'];
                     }
 
@@ -78,17 +82,19 @@ class PluginMenu {
         return $parent_file;
     }
 
-    public static function view() {
+    public static function view()
+    {
         Render::view(static::$viewDir, static::$context);
     }
 
     /**
      * Add page based on the object of Taxonomy or PostType
-     * 
+     *
      * @param type $title
      * @param object $type
      */
-    public static function addPage($title, $type) {
+    public static function addPage($title, $type)
+    {
         $objType;
         $postType;
         $link;
@@ -107,5 +113,4 @@ class PluginMenu {
         static::$subpages[$i]['link'] = $link;
         static::$subpages[$i]['post_type'] = $postType;
     }
-
 }

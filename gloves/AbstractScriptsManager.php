@@ -7,24 +7,27 @@ defined('ABSPATH') or die('No script kiddies please!');
 /**
  * Abstract class for managing scripts and styles
  */
-abstract class AbstractScriptsManager {
+abstract class AbstractScriptsManager
+{
 
     protected static $instance;
     protected static $scripts;
     protected static $adminScripts;
 
-    private function __construct() {
-        
+    private function __construct()
+    {
     }
 
-    public static function getInstance() {
+    public static function getInstance()
+    {
         if (!isset(static::$instance)) {
             static::$instance = new static();
         }
         return static::$instance;
     }
 
-    public static function init() {
+    public static function init()
+    {
         $class = get_called_class();
         add_action('admin_menu', array($class, 'loadAdmin'));
         add_action('wp_enqueue_scripts', array($class, 'load'));
@@ -33,20 +36,21 @@ abstract class AbstractScriptsManager {
     /**
      * Called on admin_menu hook
      */
-    abstract static function loadAdmin();
+    abstract public static function loadAdmin();
 
     /**
      * Called on wp_enqueue_scripts
      */
-    abstract static function load();
+    abstract public static function load();
     
     /**
-     * Returns asset's uri. 
-     * 
+     * Returns asset's uri.
+     *
      * @param string $path
      * @return plugins_url
      */
-    public static function getAssetsUrl($path){
+    public static function getAssetsUrl($path)
+    {
         return plugins_url('../'.Config::get('assets-directory').'/'.$path, __FILE__);
     }
 }
