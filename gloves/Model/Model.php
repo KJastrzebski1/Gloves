@@ -14,16 +14,14 @@ abstract class Model
      */
     protected static $fields;
     protected static $version;
-    protected static $tableName;
+    public static $tableName;
 
     public static function create()
     {
         global $wpdb;
 
-        $class = \explode('\\', get_called_class());
-        $tableName = $wpdb->prefix . \strtolower(\end($class));
-        $tableName = static::$tableName;
-        //var_dump($tableName);
+        $tableName = static::getTableName($wpdb->prefix);
+
         if (get_option($tableName . '_version') != static::$version) {
             static::drop();
             $charset_collate = $wpdb->get_charset_collate();
@@ -41,6 +39,11 @@ abstract class Model
             \update_option($tableName . '_version', static::$version);
         }
     }
+    private static function getTableName($prefix){
+        $class = \explode('\\', get_called_class());
+        $tableName = $prefix . \strtolower(\end($class));
+        return $tableName;
+    }
 
     /**
      * Drops table in database
@@ -50,7 +53,7 @@ abstract class Model
     public static function drop()
     {
         global $wpdb;
-        $tableName = static::$tableName;
+        $tableName = static::getTableName($wpdb->prefix);
 
         $sql = "DROP TABLE IF EXISTS $tableName;";
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
@@ -63,7 +66,7 @@ abstract class Model
     {
         global $wpdb;
 
-        $tableName = static::$tableName;
+        $tableName = static::getTableName($wpdb->prefix);
 
         $sql = "SELECT * FROM $tableName";
         if ($field !== null) {
@@ -85,15 +88,15 @@ abstract class Model
     public static function insert($data)
     {
         global $wpdb;
-        $tableName = static::$tableName;
+        $tableName = static::getTableName($wpdb->prefix);
         $wpdb->insert($tableName, $data);
         return $wpdb->insert_id;
     }
-    
+
     public static function update($data, $where)
     {
         global $wpdb;
-        $tableName = static::$tableName;
+        $tableName = static::getTableName($wpdb->prefix);
         return $wpdb->update($tableName, $data, $where);
     }
 
@@ -107,6 +110,7 @@ abstract class Model
     public static function delete($id)
     {
         global $wpdb;
-        return $wpdb->delete(static::$tableName, array('ID' => $id));
+        $tableName = static::getTableName($wpdb->prefix);
+        return $wpdb->delete($tableName, array('ID' => $id));
     }
 }

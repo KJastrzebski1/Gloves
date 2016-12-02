@@ -15,6 +15,7 @@ class PluginMenu
     protected static $page;
     protected static $subpages;
     protected static $context;
+    protected static $cap;
 
     private function __construct()
     {
@@ -28,10 +29,11 @@ class PluginMenu
         return static::$instance;
     }
 
-    public static function init($view, $context = array())
+    public static function init($view, $context = array(), $cap = 'administrator')
     {
         static::$viewDir = $view;
         static::$context = $context;
+        static::$cap = $cap;
         
         add_action('admin_menu', array('\Gloves\PluginMenu', 'create'));
         add_filter('parent_file', array('\Gloves\PluginMenu', 'filter'));
@@ -43,10 +45,10 @@ class PluginMenu
         static::$page['file'] = $domain;
         $name = Config::get('name');
         $function = array('\Gloves\PluginMenu', 'view');
-        static::$page['id'] = add_menu_page($name, $name, 'administrator', $domain, $function);
+        static::$page['id'] = add_menu_page($name, $name, static::$cap, $domain, $function);
         if (!empty(static::$subpages)) {
             foreach (static::$subpages as &$page) {
-                $page['id'] = \add_submenu_page($domain, $page['title'], $page['title'], 'administrator', $page['link']);
+                $page['id'] = \add_submenu_page($domain, $page['title'], $page['title'], static::$cap, $page['link']);
             }
         }
     }

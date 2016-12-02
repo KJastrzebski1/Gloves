@@ -116,10 +116,6 @@ abstract class AbstractPostType
 
     public static function insert($title, $content = '', $args = array())
     {
-        if (post_exists($title)) {
-            $post = get_page_by_title($title, OBJECT, static::$instance->slug);
-            return $post->ID;
-        }
         $post = array(
             'post_title' => $title,
             'post_content' => $content,
@@ -161,6 +157,9 @@ abstract class AbstractPostType
      */
     public static function getBy($field, $value, $orderby = 'date')
     {
+        if($field ==='ID'){
+            $field = 'p';
+        }
         $args = array(
             'posts_per_page' => -1,
             'offset' => 0,

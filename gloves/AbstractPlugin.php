@@ -61,11 +61,11 @@ abstract class AbstractPlugin
                 $module::init($args);
             }
         }
-        foreach (static::$models as $module) {
-            $module = '\Model\\' . $module;
+        foreach (static::$models as $model) {
+            $model = '\Model\\' . $model;
 
-            if (method_exists($module, 'create')) {
-                $module::create();
+            if (method_exists($model, 'create')) {
+                $model::create();
             }
         }
         add_action('plugins_loaded', array($class, 'lang'));
